@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RAINSHIELD — Assam & Nepal AI Flood Early Warning</title>
+<style>
+:root{--bg:#06131d;--panel:#0b202d;--panel2:#0e2a38;--line:#164456;--text:#e8f6f7;--muted:#8caab5;--cyan:#28d7d0;--green:#58e39b;--yellow:#ffc857;--orange:#ff8a3d;--red:#ff3b62}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 75% 0,#12384a 0,#06131d 38%);color:var(--text);font:14px Inter,Segoe UI,Arial,sans-serif}
+button{font:inherit;color:inherit}.app{display:flex;min-height:100vh}.side{width:235px;background:#061822;border-right:1px solid var(--line);padding:20px 14px;position:fixed;inset:0 auto 0 0}.brand{font-size:22px;font-weight:800;color:var(--cyan);padding:6px 12px 22px}.brand span{color:#fff}.tag{font-size:11px;color:var(--muted);margin-top:3px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:12px;border-radius:10px;cursor:pointer}.nav button:hover,.nav button.active{background:#0d5268;box-shadow:inset 3px 0 var(--cyan)}.main{margin-left:235px;width:calc(100% - 235px);padding:20px 18px 30px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.top h1{margin:0;font-size:22px}.pill{padding:7px 11px;border-radius:20px;background:#44152a;color:#ff9fb3;border:1px solid #8e2948}.grid{display:grid;gap:14px}.kpis{grid-template-columns:repeat(5,1fr)}.card{background:linear-gradient(180deg,#0b2533,#081c28);border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:0 12px 35px #0005}.kpi .n{font-size:26px;font-weight:800;margin:7px 0}.muted{color:var(--muted)}.cyan{color:var(--cyan)}.red{color:var(--red)}.green{color:var(--green)}.yellow{color:var(--yellow)}.orange{color:var(--orange)}
+.layout{grid-template-columns:1.65fr 1fr}.map{height:420px;position:relative;overflow:hidden;background:linear-gradient(140deg,#173d35,#08252e 45%,#172b38);}.terrain{position:absolute;inset:0;opacity:.55;background-image:linear-gradient(25deg,transparent 40%,#2b7562 41%,transparent 43%),linear-gradient(145deg,transparent 50%,#174e43 51%,transparent 53%),repeating-linear-gradient(165deg,transparent 0 38px,#22584d 39px 40px)}.map .region{position:absolute;inset:50px 90px 40px 75px;border:2px solid #64d6b3;border-radius:45% 55% 40% 60%;transform:rotate(-7deg);box-shadow:0 0 55px #18cda055}.zone{position:absolute;border-radius:50%;padding:9px 12px;border:1px solid #ffffff55;background:#071821dd;font-weight:700;cursor:pointer}.z1{left:27%;top:25%;color:#fff;border-color:#ff3b62;box-shadow:0 0 30px #ff3b6255}.z2{left:52%;top:37%;color:#fff;border-color:#ffc857}.z3{left:39%;top:63%;color:#fff;border-color:#58e39b}.legend{position:absolute;right:12px;top:12px;background:#071821e8;padding:12px;border-radius:10px;display:grid;gap:7px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}.redbg{background:var(--red)}.yb{background:var(--yellow)}.gb{background:var(--green)}
+.risk{display:flex;gap:14px;align-items:center}.ring{width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--red) 0 78%,#173340 78%);display:grid;place-items:center}.ring:after{content:"";width:88px;height:88px;border-radius:50%;background:#091b26}.ring b{position:absolute;font-size:26px}.bar{height:9px;border-radius:8px;background:#16323f;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--red))}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.actions{display:grid;gap:9px;margin-top:10px}.action{padding:10px;border-radius:9px;background:#0a2b36;border:1px solid #174a59}.action b{color:var(--green)}.chart{height:190px;display:flex;align-items:end;gap:12px;padding:15px 5px}.barcol{flex:1;background:linear-gradient(180deg,var(--red),#71324c);border-radius:7px 7px 0 0;position:relative}.barcol span{position:absolute;top:-22px;width:100%;text-align:center}.feed{display:grid;gap:9px}.feed div{padding:10px;border-left:3px solid var(--cyan);background:#0a2632;border-radius:7px}.screen{display:none}.screen.active{display:block}.two{grid-template-columns:1fr 1fr}.table{width:100%;border-collapse:collapse}.table td,.table th{padding:10px;border-bottom:1px solid #173a47;text-align:left}.btn{background:#0e8ea2;border:0;border-radius:9px;padding:10px 14px;cursor:pointer}.btn.danger{background:var(--red)}.toast{position:fixed;right:25px;bottom:25px;background:#0b2734;border:1px solid var(--cyan);padding:14px 18px;border-radius:12px;display:none;box-shadow:0 10px 35px #0008}.mobile{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.phone{background:#050d13;border:7px solid #182d38;border-radius:25px;padding:16px;min-height:410px}.alertbox{background:#42182a;border:1px solid var(--red);border-radius:12px;padding:14px;margin:12px 0}.big{font-size:34px;font-weight:900}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}.layout,.two{grid-template-columns:1fr}.side{width:190px}.main{margin-left:190px;width:calc(100% - 190px)}}@media(max-width:700px){.side{position:static;width:100%;height:auto}.app{display:block}.main{margin:0;width:100%}.mobile{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand">◈ RAIN<span>SHIELD</span><div class="tag">AI/ML • Rainfall · Flood · Inundation</div></div>
+  <div class="nav">
+    <button class="active" onclick="show('dashboard',this)">◈ Dashboard</button>
+    <button onclick="show('map',this)">⌁ Inundation Map</button>
+    <button onclick="show('forecast',this)">◒ AI Rainfall Forecast</button>
+    <button onclick="show('sources',this)">◉ Data Sources</button>
+    <button onclick="show('reports',this)">✚ Field Reports</button>
+    <button onclick="show('response',this)">⚑ Response Center</button>
+    <button onclick="show('citizen',this)">▣ Citizen Alerts</button>
+  </div>
+</aside>
+<main class="main">
+<section id="dashboard" class="screen active">
+ <div class="top"><h1>Integrated Heavy Rainfall Early Warning Command Center</h1><div class="pill">● 3 Flood Alerts</div></div>
+ <div class="grid kpis">
+  <div class="card kpi"><div class="muted">Monitored Flood Basins</div><div class="n">24</div><div class="green">Satellite + radar coverage</div></div>
+  <div class="card kpi"><div class="muted">Weather Stations</div><div class="n">142</div><div class="cyan">↑ 9 reporting now</div></div>
+  <div class="card kpi"><div class="muted">Heavy Rain Zones</div><div class="n red">7</div><div class="yellow">3 critical · 4 watch</div></div>
+  <div class="card kpi"><div class="muted">Peak Rainfall (24h)</div><div class="n">238 mm</div><div class="red">↑ 71% vs climatology</div></div>
+  <div class="card kpi"><div class="muted">Inundation Risk</div><div class="n red">86%</div><div class="red">HIGH</div></div>
+ </div>
+ <div class="card" style="margin-top:14px">
+  <div class="row"><h3>Flood-Prone Regional Monitoring</h3><span class="yellow">ASSAM + NEPAL</span></div>
+  <p class="muted">Primary prototype area: Assam, India. Example flood-prone monitoring cells: Dibrugarh, Dhemaji and Majuli. Cross-border demonstration mode: Nepal Terai lowlands and major river-basin flood corridors.</p>
+ </div>
+ <div class="grid layout" style="margin-top:14px">
+  <div class="card map">
+   <div class="terrain"></div><div class="region"></div>
+   <div class="zone z1" onclick="toast('Dibrugarh Urban Catchment: 86% inundation risk — drainage and low-lying areas on alert')">🔴 Dibrugarh<br><small>86% risk</small></div>
+   <div class="zone z2">🟡 Dhemaji<br><small>63% risk</small></div>
+   <div class="zone z3">🟢 Majuli<br><small>28% risk</small></div>
+   <div class="legend"><b>Inundation Risk</b><span><i class="dot redbg"></i>Critical</span><span><i class="dot yb"></i>Watch</span><span><i class="dot gb"></i>Low</span></div>
+  </div>
+  <div class="card">
+   <div class="row"><h3>Priority Flood Cell</h3><span class="pill">CRITICAL</span></div>
+   <div class="risk"><div class="ring"><b>86%</b></div><div><div class="muted">Dibrugarh Urban Catchment</div><h2>1.0–2.2 m predicted depth</h2><div class="muted">Next 6–12 hours · 89% model confidence</div></div></div>
+   <hr style="border-color:#173a47"><b>Why is risk rising?</b>
+   <div class="actions">
+    <div class="action">🌧️ Satellite rainfall <b>118 mm/3h</b></div>
+    <div class="action">📡 Radar intensity <b>71 mm/h ↑</b></div>
+    <div class="action">🌡️ Station observations <b>164 mm/24h</b></div>
+    <div class="action">🧠 NWP ensemble <b>+96 mm/6h</b></div>
+    <div class="action">💧 Soil wetness <b>84% saturated</b></div>
+   </div>
+   <button class="btn danger" style="width:100%;margin-top:12px" onclick="toast('Flood warning generated and response chain activated')">Generate Flood Warning</button>
+  </div>
+ </div>
+ <div class="grid two" style="margin-top:14px">
+  <div class="card"><div class="row"><h3>12-Hour AI Rainfall & Inundation Forecast</h3><span class="red">Dibrugarh</span></div>
+   <div class="chart">
+    <div class="barcol" style="height:34%"><span>34</span></div><div class="barcol" style="height:46%"><span>46</span></div>
+    <div class="barcol" style="height:61%"><span>61</span></div><div class="barcol" style="height:79%"><span>79</span></div>
+    <div class="barcol" style="height:92%"><span>92</span></div><div class="barcol" style="height:72%"><span>72</span></div>
+   </div><div class="row muted"><span>Now</span><span>2h</span><span>4h</span><span>6h</span><span>8h</span><span>12h</span></div>
+  </div>
+  <div class="card"><h3>Recommended Actions</h3><div class="actions">
+   <div class="action"><b>1 · Alert</b> low-lying communities along the Brahmaputra floodplain and critical road corridors</div>
+   <div class="action"><b>2 · Monitor</b> drainage capacity, river levels and urban waterlogging</div>
+   <div class="action"><b>3 · Prepare</b> pumps, shelters and emergency response teams</div>
+   <div class="action"><b>4 · Update</b> warnings every 15 minutes as radar and observations arrive</div>
+  </div></div>
+ </div>
+</section>
+
+<section id="map" class="screen"><div class="top"><h1>Live Inundation & Rainfall Risk Map</h1><button class="btn" onclick="toast('Satellite, radar and NWP layers refreshed')">Refresh layers</button></div>
+ <div class="card map" style="height:650px"><div class="terrain"></div><div class="region"></div>
+  <div class="zone z1">🔴 Dibrugarh<br>86%</div><div class="zone z2">🟡 Dhemaji<br>63%</div><div class="zone z3">🟢 Majuli<br>28%</div>
+  <div class="zone" style="right:18%;bottom:14%;color:#fff;border-color:#ff8a3d" onclick="toast('Nepal flood corridor selected: Terai lowlands / Rapti basin monitoring mode')">🟠 Nepal<br><small>Terai flood watch</small></div><div class="legend"><b>Layers</b><span>☑ Satellite rainfall</span><span>☑ Weather radar</span><span>☑ Rain gauges</span><span>☑ NWP forecast</span><span>☑ Rivers & drains</span><span>☑ Inundation depth</span><span>☑ Roads & shelters</span></div>
+ </div></section>
+
+<section id="forecast" class="screen"><div class="top"><h1>Explainable AI/ML Rainfall & Inundation Forecast</h1><span class="pill">Model confidence 89%</span></div>
+ <div class="grid two">
+  <div class="card"><h3>Inundation risk trajectory</h3><div class="big red">86%</div><p class="muted">Critical threshold: 70%</p><div class="bar"><div class="fill" style="width:86%"></div></div>
+   <h3>Integrated model drivers</h3><table class="table">
+    <tr><td>Radar rainfall intensity</td><td class="red">29%</td></tr>
+    <tr><td>Satellite precipitation</td><td class="red">23%</td></tr>
+    <tr><td>NWP ensemble forecast</td><td class="orange">20%</td></tr>
+    <tr><td>Observed rain + soil wetness</td><td class="yellow">16%</td></tr>
+    <tr><td>Terrain, drainage & land cover</td><td>12%</td></tr>
+   </table>
+  </div>
+  <div class="card"><h3>AI explanation</h3>
+   <p>Heavy rainfall detected by satellite and radar is consistent with station observations. NWP ensembles indicate continued precipitation, while wet antecedent conditions increase runoff and waterlogging potential.</p>
+   <div class="action"><b>Prediction:</b> 1.0–2.2 m inundation depth in identified low-lying cells during the next 6–12 hours if the forecast rainfall persists.</div>
+   <div class="action"><b>What-if:</b> If rainfall intensity drops below the drainage design threshold and catchment storage recovers, the predicted inundation footprint contracts.</div>
+   <button class="btn" onclick="toast('AI forecast briefing exported for incident command')">Export briefing</button>
+  </div>
+ </div></section>
+
+<section id="sources" class="screen"><div class="top"><h1>Integrated Data Sources</h1><button class="btn" onclick="toast('All data feeds synchronized')">Sync all feeds</button></div>
+ <div class="card"><table class="table"><tr><th>Source</th><th>Example feed</th><th>Latest value</th><th>Status</th><th>Role</th></tr>
+  <tr><td>🛰️ Satellite</td><td>Precipitation estimate</td><td>92 mm / 3h</td><td class="green">LIVE</td><td>Spatial rainfall coverage</td></tr>
+  <tr><td>📡 Weather Radar</td><td>Reflectivity / QPE</td><td>71 mm/h</td><td class="green">LIVE</td><td>Nowcasting & storm cells</td></tr>
+  <tr><td>🌡️ Observations</td><td>Automatic weather stations</td><td>164 mm / 24h</td><td class="green">186 online</td><td>Ground truth & calibration</td></tr>
+  <tr><td>☁️ NWP</td><td>Ensemble precipitation</td><td>+78 mm / 6h</td><td class="yellow">UPDATED</td><td>Future rainfall forcing</td></tr>
+  <tr><td>💧 Hydrology</td><td>River / drain levels</td><td>82% capacity</td><td class="yellow">WATCH</td><td>Runoff & inundation constraints</td></tr>
+  <tr><td>🗺️ GIS</td><td>DEM, land cover, drainage</td><td>1–10 m layers</td><td class="green">READY</td><td>Inundation propagation</td></tr>
+ </table></div></section>
+
+<section id="reports" class="screen"><div class="top"><h1>Field & Community Intelligence</h1><button class="btn" onclick="toast('Report triaged by AI: HIGH priority')">Run AI triage</button></div><div class="grid two"><div class="card"><h3>New hazard report</h3><div class="action">📷 Waterlogging reported<br><span class="muted">Rongdong · 8 min ago · GPS attached</span></div><div class="action">💧 Drain overflow reported<br><span class="muted">Mawyngnong · 31 min ago</span></div><div class="action">🪨 Road underpass inundated<br><span class="muted">Kiphere · 2 h ago</span></div></div><div class="card"><h3>AI triage</h3><div class="big red">HIGH</div><p>Report location, rainfall intensity and nearby observations indicate a potentially severe inundation hotspot.</p><button class="btn danger" onclick="toast('Field team dispatched')">Dispatch inspection team</button></div></div></section>
+
+<section id="response" class="screen"><div class="top"><h1>Response Center</h1><span class="pill">Escalation active</span></div><div class="grid two"><div class="card"><h3>Incident: Dibrugarh Urban Flood Cell</h3><div class="actions"><div class="action">✓ Low-lying area alert sent</div><div class="action">✓ City control room notified</div><div class="action">→ District emergency authority acknowledged</div><div class="action">○ State escalation ready</div></div><button class="btn danger" onclick="toast('State-level escalation triggered')">Escalate to State</button></div><div class="card"><h3>Response teams</h3><table class="table"><tr><td>Team Alpha</td><td>Rongdong</td><td class="green">On route</td></tr><tr><td>Team Bravo</td><td>Mawyngnong</td><td class="yellow">Standby</td></tr><tr><td>Medical Unit</td><td>District HQ</td><td class="green">Ready</td></tr></table></div></div></section>
+
+<section id="citizen" class="screen"><div class="top"><h1>Citizen Alert App Preview</h1><span class="muted">Offline-first · local language ready</span></div><div class="mobile">
+ <div class="phone"><b>RAINSHIELD</b><div class="alertbox"><b>🔴 FLOOD / INUNDATION ALERT</b><div class="big">86%</div><p>High inundation risk in the next 6 hours.</p><button class="btn danger" onclick="toast('Nearest safe shelter: Relief Shelter · 1.4 km')">Find Safe Shelter</button></div><p>Move away from low-lying roads, underpasses and fast-flowing water. Follow official updates.</p></div>
+ <div class="phone"><b>Report Waterlogging</b><div class="action" style="margin-top:20px">📷 Add photo/video</div><div class="action">📍 GPS: attached</div><div class="action">Water depth: 0.5–1.5 m</div><button class="btn" style="width:100%;margin-top:15px" onclick="toast('Flood report submitted — AI triage started')">Submit Report</button></div>
+ <div class="phone"><b>Safety Guide</b><div class="actions" style="margin-top:20px"><div class="action">✓ Avoid flooded roads and underpasses</div><div class="action">✓ Do not walk/drive through moving water</div><div class="action">✓ Switch off electricity in flooded areas</div><div class="action">✓ Follow official rainfall/flood alerts</div><div class="action">☎ Emergency: 112</div></div></div>
+ </div></section>
+</main></div><div id="toast" class="toast"></div>
+<script>
+function show(id,btn){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
+function toast(t){let x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',2800)}
+</script></body></html>
